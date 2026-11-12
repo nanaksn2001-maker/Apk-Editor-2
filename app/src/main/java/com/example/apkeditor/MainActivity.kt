@@ -44,7 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-
+import androidx.compose.material3.OutlinedButton
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +93,13 @@ fun App(vm: EditorViewModel = viewModel()) {
     var query by remember { mutableStateOf("") }
     var showReplaceAll by remember { mutableStateOf(false) }
     var showActions by remember { mutableStateOf(false) }
-
+var showInstalled by remember { mutableStateOf(false) }
+if (showInstalled) {
+    InstalledAppPicker(
+        onPick = { pkg -> showInstalled = false; vm.openInstalled(pkg) },
+        onDismiss = { showInstalled = false },
+    )
+}
     BackHandler(enabled = vm.editingName != null) { vm.cancelEdit() }
     BackHandler(enabled = vm.editingName == null && vm.apkName != null) { vm.closeApk() }
 
